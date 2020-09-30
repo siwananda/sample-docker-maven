@@ -12,7 +12,7 @@
     <artifactId>sample-docker-maven</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>sample-docker-maven</name>
-    <description>spindocker test</description>
+    <description>sample docker maven</description>
 
     <properties>
         <java.version>1.8</java.version>
