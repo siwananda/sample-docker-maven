@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spinnaker-demo-config
+  namespace: spinnaker-spring-basic
+data:
+  NEW_FEATURE: "true"
+
+---
+
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: spinnaker-spring
+  namespace: default
+  labels:
+    source: demo
+    stack: frontend
+    app: spinnaker-spring
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      source: demo
+      app: spinnaker-spring
+  template:
+    metadata:
+      labels:
+        source: demo
+        app: spinnaker-spring
+    spec:
+      containers:
+        - name: primary
+          image: index.docker.io/siwananda/sample-docker-maven
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+          envFrom:
+            - configMapRef:
+                name: spinnaker-demo-config
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: spinnaker-spring
+  namespace: spinnaker-spring-basic
+spec:
+  selector:
+    source: demo
+    app: spinnaker-spring
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
