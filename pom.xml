@@ -47,7 +47,6 @@
     </dependencies>
 
     <build>
-        <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -81,6 +80,9 @@
                     <password>${env.DOCKER_HUB_TOKEN}</password>
                     <repository>registry.hub.docker.com/${project.groupId}/${project.artifactId}</repository>
                     <tag>${project.version}</tag>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
                 </configuration>
             </plugin>
             <plugin>
